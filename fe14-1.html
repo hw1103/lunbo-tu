@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>轮播图</title>
+        <style>
+        .button-center{
+            top: 50%;
+            position: relative;
+            transform: translateY(-50%);
+        }
+        .lunbotu-all{
+            width: 300px;
+            height:200px;
+            overflow: hidden;
+        }
+        .lunbo-all-imag{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .lunbo-imag-button{
+            position: absolute;
+            color: #7be6f4;
+            background: black;
+            border: 0;
+            outline: 0;
+        }
+        .lb-button-left{
+            left: 0
+        }
+        .lb-button-right{
+            right: 0
+        }
+        .lunbo-imag-all{
+            display: none;
+        }
+        .lunbo-imag-one{
+            display: block;
+        }
+        .lunbotu-all-yuandian{
+            bottom: 20px;
+            position: relative;
+            /*background: #140e0e;*/
+            text-align: center;
+        }
+        .lunbo-yuandian-a{
+            display: inline-block;
+            background: black;
+            color: white;
+            border-radius: 50%;
+            padding: 0 5px;
+
+        }
+        .lunbo-yuandian-b{
+            background:#6c526f;
+        }
+        </style>
+    </head>
+    <body>
+        <div class='lunbotu-all'>
+             <div class='lunbo-all-imag'data-one='0'data-imag='3'>
+                 <img class="lunbo-imag-all lunbo-imag-one" src="1.jpg" />
+                 <img class="lunbo-imag-all" src="2.jpg" />
+                 <img class="lunbo-imag-all" src="3.jpg" />
+                 <button class='lunbo-imag-button lb-button-left button-center'type="button"><strong><</strong></button>
+                 <button class='lunbo-imag-button lb-button-right button-center'type="button"><strong>></strong></button>
+             </div>
+             <div class="lunbotu-all-yuandian">
+                 <div class="lunbo-yuandian-a lunbo-yuandian-b">1</div>
+                 <div class="lunbo-yuandian-a">2</div>
+                 <div class="lunbo-yuandian-a">3</div>
+             </div>
+        </div>
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    </body>
+    <script>
+            let log = console.log.bind(console)
+            let playNext = function() {
+                // 得到当前下标
+                let xiaobiao = $('.lunbo-all-imag').data('one')
+                // 得到图片
+                let  tupian = $('.lunbo-all-imag').data('imag')
+                // 计算出新下标
+                let i = (xiaobiao + tupian + 1) % tupian
+                $('.lunbo-all-imag').data('one', i)
+                // 弹出效果 fadeOut()
+                $('.lunbo-imag-one').fadeOut()
+                //  删除当前图片
+                $('.lunbo-imag-one').removeClass('lunbo-imag-one')
+                // 添加下一张图片
+                $($('.lunbo-imag-all')[i]).addClass('lunbo-imag-one')
+                // 弹入效果fadeIn()
+                $($('.lunbo-imag-all')[i]).addClass('lunbo-imag-one').fadeIn()
+                // 改变圆点指示
+                $('.lunbo-yuandian-b').removeClass('lunbo-yuandian-b')
+                $($('.lunbo-yuandian-a')[i]).addClass('lunbo-yuandian-b')
+             }
+            let playup = function() {
+                let  xiaobiao = $('.lunbo-all-imag').data('one')
+                 // 得到图片
+                let  tupian = $('.lunbo-all-imag').data('imag')
+                 // 计算出新下标
+                let i = (xiaobiao + tupian - 1) % tupian
+                 $('.lunbo-all-imag').data('one', i)
+                 // 弹出效果 fadeOut()
+                 $('.lunbo-imag-one').fadeOut()
+                //  删除当前图片
+                 $('.lunbo-imag-one').removeClass('lunbo-imag-one')
+                // 添加上一张图片
+                 $($('.lunbo-imag-all')[i]).addClass('lunbo-imag-one')
+                // 弹入效果fadeIn()
+                $($('.lunbo-imag-all')[i]).addClass('lunbo-imag-one').fadeIn()
+                // 改变圆点指示
+                $('.lunbo-yuandian-b').removeClass('lunbo-yuandian-b')
+                $($('.lunbo-yuandian-a')[i]).addClass('lunbo-yuandian-b')
+            }
+
+           $('.lunbo-imag-button').on('click', function(event) {
+               let button = $(event.target)
+               if (button.hasClass('lb-button-left')) {
+                   playup()
+               } else {
+                   playNext()
+
+               }
+           })
+
+            // // 自动定时切换效果的实现
+            // let  autoNext = setInterval(function(){
+            //     playNext()
+            // },  2000)
+            // 鼠标在图片上时停止自动切换
+           $('.lunbo-all-imag').on('mouseover', function(){
+               clearTimeout(autoNext)
+           })
+           //  鼠标移开后继续自动切换
+           $('.lunbo-all-imag').on('mouseout', function(){
+                autoNext = setInterval(function(){
+                   playNext()
+               },  2000)
+           })
+
+          //  鼠标移动至原点处切换图片
+           $('')
+    </script>
+
+</html>
